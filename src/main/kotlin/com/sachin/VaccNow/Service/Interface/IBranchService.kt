@@ -1,7 +1,7 @@
 package com.sachin.VaccNow.Service.Interface
 
-import com.sachin.VaccNow.Entity.Branch
+import com.sachin.VaccNow.DTO.BranchDTO
 
 interface IBranchService {
-    fun getAllBranch() : List<Branch>
+    fun getAllBranch() : List<BranchDTO>
 }

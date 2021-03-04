@@ -1,5 +1,6 @@
 package com.sachin.VaccNow.Entity
 
+import java.sql.Timestamp
 import javax.persistence.*
 
 
@@ -14,7 +15,7 @@ data class Branch(
         @Column(nullable = false)
         val location: String,
         @Column(name = "date_created", nullable = false)
-        val dateCreated: String,
+        val dateCreated: Timestamp,
         @Column(name = "date_modified", nullable = false)
-        val dateModified: String
+        val dateModified: Timestamp
 )
