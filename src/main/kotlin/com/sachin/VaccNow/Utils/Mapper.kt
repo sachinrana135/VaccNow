@@ -6,7 +6,6 @@ import com.sachin.VaccNow.Entity.Branch
 import com.sachin.VaccNow.Entity.BranchVaccine
 
 fun branchEntityToDTOMapper(branch: Branch): BranchDTO {
-
     return BranchDTO(
             id = branch.id,
             name = branch.name,

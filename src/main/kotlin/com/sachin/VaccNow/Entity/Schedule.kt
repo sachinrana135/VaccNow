@@ -11,10 +11,8 @@ data class Schedule(
         val id: Long = 0,
         @Column(nullable = false)
         val email: String,
-        @Column(name="`from`", nullable = false)
-        val from: Timestamp,
-        @Column(name="`to`",nullable = false)
-        val to: Timestamp,
+        @Column(name = "`slot`", nullable = false)
+        val slot: Timestamp,
         @OneToOne(cascade = [CascadeType.DETACH])
         @JoinColumn(name = "branch_id", referencedColumnName = "id")
         val branch: Branch,
@@ -24,9 +22,9 @@ data class Schedule(
         @Column(nullable = false)
         val paymentType: String,
         @Column(nullable = false)
-        val status: String,
+        var status: String,
         @Column(name = "date_created", nullable = false)
         val dateCreated: Timestamp,
         @Column(name = "date_modified", nullable = false)
-        val dateModified: Timestamp
+        var dateModified: Timestamp
 )

@@ -16,7 +16,7 @@ data class BranchVaccine(
         @OneToOne(cascade = [CascadeType.DETACH])
         @JoinColumn(name = "vaccine_id", referencedColumnName = "id")
         val vaccine: Vaccine,
-        val count: Long,
+        var count: Long,
         @Column(name = "date_created", nullable = false)
         val dateCreated: Timestamp,
         @Column(name = "date_modified", nullable = false)
