@@ -1,11 +1,12 @@
 package com.sachin.VaccNow.Controller
 
-import com.sachin.VaccNow.DTO.ScheduleFilter
 import com.sachin.VaccNow.DTO.ScheduleRequestDTO
 import com.sachin.VaccNow.DTO.ScheduleResponseDTO
 import com.sachin.VaccNow.Entity.ScheduleStatus
 import com.sachin.VaccNow.Service.ScheduleService
+import com.sachin.VaccNow.Utils.ScheduleFilter
 import org.springframework.web.bind.annotation.*
+import javax.validation.constraints.NotBlank
 
 
 @RestController
@@ -20,7 +21,7 @@ class ScheduleController(private val scheduleService: ScheduleService) {
 
     @RequestMapping("/apply/{scheduleId}")
     @PatchMapping
-    fun applyVaccine(@PathVariable("scheduleId") id: Long): Long {
+    fun applyVaccine(@PathVariable("scheduleId") @NotBlank id: Long): Long {
         return scheduleService.applyVaccination(id)
     }
 
@@ -30,8 +31,7 @@ class ScheduleController(private val scheduleService: ScheduleService) {
                         @RequestParam(required = false) fromDate: String?,
                         @RequestParam(required = false) toDate: String?): List<ScheduleResponseDTO> {
 
-        //todo handle validation
-        val vaccinationStatus = status?.let { ScheduleStatus.from(status)!!.value }
+        val vaccinationStatus = status?.let { ScheduleStatus.from(status)?.value }
         val filter = ScheduleFilter(
                 status = vaccinationStatus,
                 branchId = branchId,

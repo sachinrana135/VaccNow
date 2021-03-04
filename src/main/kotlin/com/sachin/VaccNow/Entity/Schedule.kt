@@ -7,11 +7,11 @@ import javax.persistence.*
 @Table(name = "schedule")
 data class Schedule(
         @Id
-        @GeneratedValue
-        val id: Long = 0,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long = 0,
         @Column(nullable = false)
         val email: String,
-        @Column(name = "`slot`", nullable = false)
+        @Column(name = "slot", nullable = false)
         val slot: Timestamp,
         @OneToOne(cascade = [CascadeType.DETACH])
         @JoinColumn(name = "branch_id", referencedColumnName = "id")

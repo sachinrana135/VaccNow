@@ -1,10 +1,10 @@
-package com.sachin.VaccNow.DTO
+package com.sachin.VaccNow.Utils
 
-import com.sachin.VaccNow.DTO.ScheduleFilterCriteria.Companion.fromBranch
-import com.sachin.VaccNow.DTO.ScheduleFilterCriteria.Companion.fromDate
-import com.sachin.VaccNow.DTO.ScheduleFilterCriteria.Companion.statusIs
-import com.sachin.VaccNow.DTO.ScheduleFilterCriteria.Companion.toDate
 import com.sachin.VaccNow.Entity.Schedule
+import com.sachin.VaccNow.Utils.ScheduleFilterCriteria.Companion.fromBranch
+import com.sachin.VaccNow.Utils.ScheduleFilterCriteria.Companion.fromDate
+import com.sachin.VaccNow.Utils.ScheduleFilterCriteria.Companion.statusIs
+import com.sachin.VaccNow.Utils.ScheduleFilterCriteria.Companion.toDate
 import org.springframework.data.jpa.domain.Specification
 
 data class ScheduleFilter(

@@ -1,9 +1,8 @@
-package com.sachin.VaccNow.DTO
+package com.sachin.VaccNow.Utils
 
 import com.sachin.VaccNow.DATE_FORMAT
 import com.sachin.VaccNow.Entity.Branch
 import com.sachin.VaccNow.Entity.Schedule
-import com.sachin.VaccNow.Utils.toTimeStamp
 import org.springframework.data.jpa.domain.Specification
 import java.sql.Timestamp
 
