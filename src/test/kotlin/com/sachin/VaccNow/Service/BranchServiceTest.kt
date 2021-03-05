@@ -8,6 +8,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.springframework.boot.test.context.SpringBootTest
+import java.util.*
 
 
 @SpringBootTest
@@ -29,15 +30,4 @@ class BranchServiceTest {
         verify(branchRepository, times(1)).findAll()
         assertEquals(mockBranchesDTO, result)
     }
-
-    /*@Test
-    fun `Get available slots for a branch`() {
-
-        val branchId:Long = 1
-        `when`(branchRepository.findByIdOrNull(branchId)).thenReturn(mockBranchEntity)
-        var result = branchService.getSlots(branchId)
-
-        verify(branchRepository, times(1)).findByIdOrNull(branchId)
-        assertEquals(mockSlotDT, result)
-    }*/
 }
