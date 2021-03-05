@@ -39,6 +39,6 @@ class ScheduleController(private val scheduleService: ScheduleService) {
                 `to` = toDate
         )
 
-        return scheduleService.getVaccinationByStatus(filter)
+        return scheduleService.getVaccinationByStatus(filter.buildFilterSpecification())
     }
 }

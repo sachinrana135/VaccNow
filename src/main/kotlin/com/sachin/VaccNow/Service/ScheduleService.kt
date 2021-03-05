@@ -11,24 +11,29 @@ import com.sachin.VaccNow.Repository.BranchVaccineRepository
 import com.sachin.VaccNow.Repository.ScheduleRepository
 import com.sachin.VaccNow.Repository.VaccineRepository
 import com.sachin.VaccNow.Service.Interface.IScheduleService
-import com.sachin.VaccNow.Utils.ScheduleFilter
+import com.sachin.VaccNow.Utils.DateTimeUtils
 import com.sachin.VaccNow.Utils.toTimeStamp
+import com.sachin.VaccNow.error.DuplicateRecordFoundException
 import com.sachin.VaccNow.error.InvalidRequestException
 import com.sachin.VaccNow.error.RecordNotFoundException
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.sql.Timestamp
 
 @Service
 class ScheduleService(private val scheduleRepository: ScheduleRepository,
                       private val branchRepository: BranchRepository,
                       private val branchVaccineRepository: BranchVaccineRepository,
-                      private val vaccineRepository: VaccineRepository) : IScheduleService {
+                      private val vaccineRepository: VaccineRepository,
+                      private val dateTimeUtils: DateTimeUtils) : IScheduleService {
+
+
     override fun scheduleVaccination(scheduleRequestDto: ScheduleRequestDTO): Long {
 
         val branch = branchRepository.findByIdOrNull(scheduleRequestDto.branchId) ?: throw RecordNotFoundException()
         val vaccine = vaccineRepository.findByIdOrNull(scheduleRequestDto.vaccineId) ?: throw RecordNotFoundException()
         val paymentType = PaymentMethod.from(scheduleRequestDto.paymentType)?.value ?: throw InvalidRequestException()
+        scheduleRepository.findByEmail(scheduleRequestDto.email)?.let { throw DuplicateRecordFoundException() }
 
         val scheduleEntity = Schedule(
                 email = scheduleRequestDto.email,
@@ -37,8 +42,8 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
                 vaccine = vaccine,
                 paymentType = paymentType!!,
                 status = ScheduleStatus.CONFIRMED.value,
-                dateCreated = Timestamp(System.currentTimeMillis()),
-                dateModified = Timestamp(System.currentTimeMillis())
+                dateCreated = dateTimeUtils.getCurrentTimeStamp(),
+                dateModified = dateTimeUtils.getCurrentTimeStamp()
         )
 
         return scheduleRepository.save(scheduleEntity).id
@@ -49,7 +54,7 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
 
         schedule.apply {
             status = ScheduleStatus.APPLIED.value
-            dateModified = Timestamp(System.currentTimeMillis())
+            dateModified = dateTimeUtils.getCurrentTimeStamp()
         }
 
         val branchVaccine = branchVaccineRepository.findByVaccineIdAndBranchId(schedule.branch.id, schedule.vaccine.id)
@@ -58,8 +63,8 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
         return scheduleRepository.save(schedule).id
     }
 
-    override fun getVaccinationByStatus(filter: ScheduleFilter): List<ScheduleResponseDTO> {
-        return scheduleRepository.findAll(filter.buildFilterSpecification()).map {
+    override fun getVaccinationByStatus(filterSpecification: Specification<Schedule>): List<ScheduleResponseDTO> {
+        return scheduleRepository.findAll(filterSpecification).map {
             ScheduleResponseDTO(
                     scheduleId = it.id,
                     email = it.email,
