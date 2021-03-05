@@ -25,6 +25,8 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
                       private val branchRepository: BranchRepository,
                       private val branchVaccineRepository: BranchVaccineRepository,
                       private val vaccineRepository: VaccineRepository,
+                      private val certificateGeneratorService: CertificateGeneratorService,
+                      private val emailService: EmailService,
                       private val dateTimeUtils: DateTimeUtils) : IScheduleService {
 
 
@@ -33,8 +35,7 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
         val branch = branchRepository.findByIdOrNull(scheduleRequestDto.branchId) ?: throw RecordNotFoundException()
         val vaccine = vaccineRepository.findByIdOrNull(scheduleRequestDto.vaccineId) ?: throw RecordNotFoundException()
         val paymentType = PaymentMethod.from(scheduleRequestDto.paymentType)?.value ?: throw InvalidRequestException()
-        scheduleRepository.findByEmail(scheduleRequestDto.email)?.let { throw DuplicateRecordFoundException() }
-
+        if(scheduleRepository.findByEmail(scheduleRequestDto.email).isPresent) throw DuplicateRecordFoundException()
         val scheduleEntity = Schedule(
                 email = scheduleRequestDto.email,
                 slot = scheduleRequestDto.slot.toTimeStamp(DATE_TIME_FORMAT),
@@ -46,7 +47,14 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
                 dateModified = dateTimeUtils.getCurrentTimeStamp()
         )
 
-        return scheduleRepository.save(scheduleEntity).id
+        val result =  scheduleRepository.save(scheduleEntity)
+
+        result?.let {
+            emailService.sendEmail(result)
+        }
+
+        return result.id
+
     }
 
     override fun applyVaccination(scheduleId: Long): Long {
@@ -60,7 +68,13 @@ class ScheduleService(private val scheduleRepository: ScheduleRepository,
         val branchVaccine = branchVaccineRepository.findByVaccineIdAndBranchId(schedule.branch.id, schedule.vaccine.id)
         branchVaccine.count -= 1
         branchVaccineRepository.save(branchVaccine)
-        return scheduleRepository.save(schedule).id
+        val result = scheduleRepository.save(schedule)
+
+        result?.let {
+            certificateGeneratorService.generateCertificate(result)
+        }
+
+        return result.id
     }
 
     override fun getVaccinationByStatus(filterSpecification: Specification<Schedule>): List<ScheduleResponseDTO> {

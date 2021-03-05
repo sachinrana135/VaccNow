@@ -33,6 +33,12 @@ class ScheduleServiceTest {
     lateinit var vaccineRepository: VaccineRepository
 
     @Mock
+    lateinit var certificateGeneratorService: CertificateGeneratorService
+
+    @Mock
+    lateinit var emailService: EmailService
+
+    @Mock
     lateinit var dateTimeUtils: DateTimeUtils
 
     @InjectMocks
@@ -50,6 +56,7 @@ class ScheduleServiceTest {
         verify(branchRepository, Mockito.times(1)).findById(mockScheduleRequestDto.branchId)
         verify(vaccineRepository, Mockito.times(1)).findById(mockScheduleRequestDto.vaccineId)
         verify(scheduleRepository, Mockito.times(1)).save(mockScheduleEntity)
+        verify(emailService, Mockito.times(1)).sendEmail(mockScheduleEntity)
         verify(dateTimeUtils, times(2)).getCurrentTimeStamp()
         Assertions.assertEquals(0, result)
     }
@@ -75,6 +82,7 @@ class ScheduleServiceTest {
         verify(branchVaccineRepository, Mockito.times(1)).findByVaccineIdAndBranchId(mockScheduleEntity.branch.id, mockScheduleEntity.vaccine.id)
         verify(scheduleRepository, Mockito.times(1)).findById(scheduleId)
         verify(scheduleRepository, Mockito.times(1)).save(updatedEntity)
+        verify(certificateGeneratorService, Mockito.times(1)).generateCertificate(updatedEntity)
         verify(dateTimeUtils, times(1)).getCurrentTimeStamp()
         Assertions.assertEquals(0, result)
     }
