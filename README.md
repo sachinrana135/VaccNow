@@ -2,7 +2,9 @@
 
 As a cautious action after Covid-19, VaccNow is an healthcare organization managing the process of Covid-19 vaccine to public, so that the VaccNow is planning to build multi their digital channels for consuming a modern API for basic features.This is planned to be API first approach, of well-tested functions and enabling agility of later modifications.
 
-### Note - Project is built with H2 Memory database and data will be seeded using [data.sql](https://github.com/sachinrana135/VaccNow/blob/main/src/main/resources/data.sql)  on app start
+* ##### Note - Project is built with H2 Memory database and data will be seeded using [data.sql](https://github.com/sachinrana135/VaccNow/blob/main/src/main/resources/data.sql)  on app start.
+* ##### Certification will be generated after applying of vaccination . It will be save in PDF format at project root folder.
+* ##### Email will be printed in console after confirming schedule.
 
 ## Table of contents
 * [Technologies](#technologies)
