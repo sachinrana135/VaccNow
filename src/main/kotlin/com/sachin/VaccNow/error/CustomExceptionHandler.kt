@@ -45,7 +45,7 @@ class CustomExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity<ErrorResponse?>(errorResponse, HttpStatus.NOT_FOUND)
     }
 
-    /*@ExceptionHandler(Exception::class)
+    @ExceptionHandler(Exception::class)
     fun handleAllExceptions(ex: Exception, request: WebRequest?): ResponseEntity<ErrorResponse?> {
         var errorResponse = ErrorResponse(
                 status = HttpStatus.INTERNAL_SERVER_ERROR,
@@ -54,6 +54,6 @@ class CustomExceptionHandler : ResponseEntityExceptionHandler() {
                 timeStamp = LocalDateTime.now()
         )
         return ResponseEntity<ErrorResponse?>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
-    }*/
+    }
 
 }
