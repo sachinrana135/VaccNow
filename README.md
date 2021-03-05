@@ -28,4 +28,4 @@ Project is created with:
 
 * [API Documentation](https://documenter.getpostman.com/view/2141799/Tz5jcz6t)
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/36f1ceca4865d3e0cb7a)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/36f1ceca4865d3e0cb7a)
