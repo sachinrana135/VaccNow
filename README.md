@@ -9,6 +9,7 @@ As a cautious action after Covid-19, VaccNow is an healthcare organization manag
 ## Table of contents
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [ER Diagram](#erd)
 * [APIs](#apis)
 
 ## Technologies
@@ -25,6 +26,10 @@ Project is created with:
 * Go to project root folder and use **./gradlew bootRun** to run up the application
 * Application will run on port number 8084 
 * H2 console link - http://127.0.0.1:8084/api/v1/h2-console/
+
+## ER Diagram
+
+![alt text](https://github.com/sachinrana135/VaccNow/blob/main/src/main/resources/erd.png)
 
 ## APIs
 
